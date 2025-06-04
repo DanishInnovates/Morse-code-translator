@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morse Code Translator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 90%;
+            max-width: 500px;
+            backdrop-filter: blur(10px);
+            color: white;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            outline: none;
+            resize: none;
+        }
+
+        textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 8px;
+            background: #ff7eb3;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #ff477e;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            outline: none;
+            appearance: none;
+            /* Removes default dropdown arrow */
+        }
+
+        /* Style the dropdown options */
+        select::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        select::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+        }
+
+        select option {
+            background: rgba(255, 255, 255, 0.2);
+            color: black;
+            border-radius: 8px;
+            /* This makes the dropdown options rounded */
+            padding: 10px;
+        }
+
+        /* For Firefox */
+
+
+
+        option {
+            background-color: white;
+            color: black;
+            
+
+
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            appearance: none;
+            /* Hide default dropdown arrow */
+            cursor: pointer;
+            background: white;
+        }
+
+        /* Custom Arrow */
+        .dropdown::after {
+            content: "▼";
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Morse Code Translator</h2>
+        <label>Choose Language
+            <select id="language">
+                <option value="English">English</option>
+                <option value="Spanish">Spanish</option>
+                <option value="French">French</option>
+            </select>
+        </label>
+        <textarea id="inputText" placeholder="Enter text or Morse code..."></textarea>
+        <textarea id="outputText" placeholder="Converted output..." readonly></textarea>
+        <button onclick="clearFields()">Clear</button>
+    </div>
+    <script>
+        const morseCode = {
+            'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.',
+            'F': '..-.', 'G': '--.', 'H': '....', 'I': '..', 'J': '.---',
+            'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.', 'O': '---',
+            'P': '.--.', 'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-',
+            'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-', 'Y': '-.--',
+            'Z': '--..',
+            '1': '.----', '2': '..---', '3': '...--', '4': '....-', '5': '.....',
+            '6': '-....', '7': '--...', '8': '---..', '9': '----.', '0': '-----',
+            ' ': '/'
+        };
+
+        const reverseMorse = Object.fromEntries(Object.entries(morseCode).map(([key, value]) => [value, key]));
+
+        document.getElementById('inputText').addEventListener('input', function () {
+            const input = this.value.trim();
+            const isMorse = /^[\.-\/ ]+$/.test(input);
+            document.getElementById('outputText').value = isMorse ? decodeMorse(input) : encodeMorse(input.toUpperCase());
+        });
+
+        function encodeMorse(text) {
+            return text.split('').map(char => morseCode[char] || char).join(' ');
+        }
+
+        function decodeMorse(code) {
+            return code.split(' ').map(symbol => reverseMorse[symbol] || symbol).join('');
+        }
+
+        function clearFields() {
+            document.getElementById('inputText').value = '';
+            document.getElementById('outputText').value = '';
+        }
+    </script>
+</body>
+
+</html>
